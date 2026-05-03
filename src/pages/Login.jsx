@@ -71,10 +71,10 @@ export default function Login() {
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-brand-600 font-medium hover:underline">
+          Don't have an account?{' '} Contact on This Number , 7706897675
+          {/* <Link to="/register" className="text-brand-600 font-medium hover:underline">
             Create one
-          </Link>
+          </Link> */}
         </p>
       </div>
     </div>
