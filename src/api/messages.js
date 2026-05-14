@@ -14,3 +14,6 @@ export const getMessages = (params) =>
 
 export const getMessageById = (id) =>
   client.get(`/messages/${id}`).then((r) => r.data)
+
+export const updateMessage = (id, data) =>
+  client.put(`/messages/${id}`, data).then((r) => r.data)
