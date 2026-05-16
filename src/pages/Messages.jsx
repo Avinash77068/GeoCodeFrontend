@@ -172,7 +172,7 @@ export default function Messages() {
           <div className="divide-y divide-gray-50">
             {messages.map((msg) => (
               <div key={msg._id} className="flex items-start gap-3 px-5 py-4 hover:bg-gray-50 transition-colors">
-                <div className="flex-1 min-w-0">
+                <div className="flex w-[100%]">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-medium text-sm text-gray-900 truncate">
                       {msg.business?.name || 'Unknown business'}

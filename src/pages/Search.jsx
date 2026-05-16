@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Search as SearchIcon, SlidersHorizontal, MapPin, CheckSquare, Square } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
 import { searchBusinesses } from '../api/search'
 import { bulkSendMessages } from '../api/messages'
 import { useToastContext } from '../context/ToastContext'
@@ -18,6 +19,7 @@ const CATEGORIES = [
 
 export default function Search() {
   const toast = useToastContext()
+  const [searchParams] = useSearchParams()
   const [form, setForm] = useState({ location: '', radius: '5', category: '', keyword: '' })
   const [results, setResults] = useState(null)
   const [selectedBusiness, setSelectedBusiness] = useState(null)
@@ -25,6 +27,23 @@ export default function Search() {
   const [selected, setSelected] = useState(new Set())
   const [bulkGoal, setBulkGoal] = useState('')
   const [bulkLoading, setBulkLoading] = useState(false)
+
+  // Read URL parameters and set form values
+  useEffect(() => {
+    const location = searchParams.get('location')
+    const radius = searchParams.get('radius')
+    const category = searchParams.get('category')
+    const keyword = searchParams.get('keyword')
+
+    if (location || radius || category || keyword) {
+      setForm({
+        location: location || '',
+        radius: radius || '5',
+        category: category || '',
+        keyword: keyword || ''
+      })
+    }
+  }, [searchParams])
 
   const searchMutation = useMutation({
     mutationFn: () => searchBusinesses(Object.fromEntries(

@@ -16,79 +16,94 @@ export default function BusinessCard({ business, onMessage, selected, onSelect }
   return (
     <Card
       className={`transition-all cursor-pointer hover:shadow-md ${
-        selected ? 'ring-2 ring-brand-500' : ''
+        selected ? "ring-2 ring-brand-500" : ""
       }`}
       onClick={() => onSelect?.(business)}
     >
       <CardBody className="space-y-3">
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-gray-900 text-sm truncate">{business.name}</h3>
-            <Badge color="blue" className="mt-1">{business.category}</Badge>
+            <h3 className="font-semibold text-gray-900 text-sm truncate">
+              {business.name}
+            </h3>
+            <Badge color="blue" className="mt-1 inline-block">
+              {business.category}
+            </Badge>
           </div>
           {business.rating && <StarRating rating={business.rating} />}
         </div>
 
-        <div className="space-y-1.5 text-xs text-gray-500">
+        <div className="space-y-2 text-xs text-gray-500">
           {business.address && (
             <div className="flex items-start gap-1.5">
               <MapPin size={12} className="shrink-0 mt-0.5" />
-              <span className="truncate">{business.address}</span>
+              <span className="break-words">{business.address}</span>
             </div>
           )}
-          {business.phone && (
-            <div className="flex items-center gap-1.5">
-              <Phone size={12} className="shrink-0" />
-              <a
-                href={`tel:${business.phone}`}
-                className="hover:text-brand-600"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {business.phone}
-              </a>
-            </div>
-          )}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            {business.phone && (
+              <div className="flex items-center gap-1.5">
+                <Phone size={12} className="shrink-0" />
+                <a
+                  href={`tel:${business.phone}`}
+                  className="hover:text-brand-600 break-all"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {business.phone}
+                </a>
+              </div>
+            )}
+            {business.openingHours?.isOpen !== undefined && (
+              <div className="flex items-center gap-1.5">
+                <Clock size={12} className="shrink-0" />
+                <span
+                  className={
+                    business.openingHours.isOpen
+                      ? "text-green-600 font-medium"
+                      : "text-red-500 font-medium"
+                  }
+                >
+                  {business.openingHours.isOpen ? "Open now" : "Closed"}
+                </span>
+              </div>
+            )}
+          </div>
           {business.website && (
-            <div className="flex items-center gap-1.5">
-              <Globe size={12} className="shrink-0" />
+            <div className="flex items-start gap-1.5">
+              <Globe size={12} className="shrink-0 mt-0.5" />
               <a
                 href={business.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-brand-600 truncate"
+                className="hover:text-brand-600 break-all text-blue-600"
                 onClick={(e) => e.stopPropagation()}
               >
-                {business.website.replace(/^https?:\/\//, '')}
+                {business.website.replace(/^https?:\/\//, "")}
               </a>
-            </div>
-          )}
-          {business.openingHours?.isOpen !== undefined && (
-            <div className="flex items-center gap-1.5">
-              <Clock size={12} className="shrink-0" />
-              <span className={business.openingHours.isOpen ? 'text-green-600' : 'text-red-500'}>
-                {business.openingHours.isOpen ? 'Open now' : 'Closed'}
-              </span>
             </div>
           )}
         </div>
 
         {business.totalRatings && (
-          <p className="text-xs text-gray-400">{business.totalRatings.toLocaleString()} reviews</p>
+          <p className="text-xs text-gray-400">
+            {business.totalRatings.toLocaleString()} reviews
+          </p>
         )}
 
         <Button
           size="sm"
           variant="secondary"
-          className="w-full"
+          className="w-full sm:w-auto"
           onClick={(e) => {
-            e.stopPropagation()
-            onMessage?.(business)
+            e.stopPropagation();
+            onMessage?.(business);
           }}
         >
-          <MessageSquare size={14} />
-          Compose Message
+          <MessageSquare size={14} className="sm:mr-1" />
+          <span className="hidden sm:inline">Compose Message</span>
+          <span className="sm:hidden">Message</span>
         </Button>
       </CardBody>
     </Card>
-  )
+  );
 }
