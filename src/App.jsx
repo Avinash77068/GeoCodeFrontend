@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard'
 import Search from './pages/Search'
 import Messages from './pages/Messages'
 import Export from './pages/Export'
+import Admin from './pages/Admin'
 import { PageLoader } from './components/ui/Spinner'
 
 const queryClient = new QueryClient({
@@ -27,10 +28,18 @@ function ProtectedRoute({ children }) {
   return <Layout>{children}</Layout>
 }
 
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <PageLoader />
+  if (!user) return <Navigate to="/login" replace />
+  if (user.role !== 'admin') return <Navigate to="/dashboard" replace />
+  return <Layout>{children}</Layout>
+}
+
 function PublicRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <PageLoader />
-  if (user) return <Navigate to="/dashboard" replace />
+  if (user) return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
   return children
 }
 
@@ -39,6 +48,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       {/* <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} /> */}
+      <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
       <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />

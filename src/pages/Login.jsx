@@ -28,8 +28,12 @@ export default function Login() {
     setErrors({})
     setLoading(true)
     try {
-      await login(form.email, form.password)
-      navigate('/dashboard')
+      const res = await login(form.email, form.password)
+      if (res?.data?.user?.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (err) {
       toast(err.response?.data?.message || 'Invalid credentials', 'error')
     } finally {

@@ -1,7 +1,16 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Search, MessageSquare, Download, MapPin } from 'lucide-react'
+import { LayoutDashboard, Search, MessageSquare, Download, MapPin, ShieldCheck } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
 
-const nav = [
+const userNav = [
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/search', label: 'Search', icon: Search },
+  { to: '/messages', label: 'Messages', icon: MessageSquare },
+  { to: '/export', label: 'Export', icon: Download },
+]
+
+const adminNav = [
+  { to: '/admin', label: 'Admin Panel', icon: ShieldCheck },
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/search', label: 'Search', icon: Search },
   { to: '/messages', label: 'Messages', icon: MessageSquare },
@@ -9,6 +18,9 @@ const nav = [
 ]
 
 export default function Sidebar() {
+  const { user } = useAuth()
+  const nav = user?.role === 'admin' ? adminNav : userNav
+
   return (
     <aside className="hidden md:flex flex-col w-60 bg-white border-r border-gray-200 min-h-screen">
       <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
